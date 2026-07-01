@@ -1,0 +1,30 @@
+{
+  "name": "FeeFlow — College Fee Management",
+  "short_name": "FeeFlow",
+  "description": "Comprehensive student fee management, scholarship tracking, and automated notifications",
+  "start_url": "./app.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b1120",
+  "theme_color": "#38bdf8",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": [
+    "education",
+    "finance",
+    "productivity"
+  ],
+  "lang": "en"
+}

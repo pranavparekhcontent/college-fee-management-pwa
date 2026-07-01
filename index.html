@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeeFlow — College Fee Management PWA</title>
+
+  <meta name="description"
+    content="FeeFlow is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support.">
+  <meta name="keywords"
+    content="fee manager app, college fee management, scholarship tracker, student fees, PWA fee system, Google Sheets sync, offline fee app, FeeFlow">
+  <meta name="author" content="VibeMantra Studio">
+  <meta name="theme-color" content="#0b0f19">
+
+  <!-- Fonts & Icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- PWA & Safari Compatibility -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Auto-Redirect returning users instantly if license key is cached -->
+  <script>
+    try {
+      const key = localStorage.getItem('fee_manager_license');
+      if (key) {
+        window.location.replace('app.html');
+      }
+    } catch (e) { }
+  </script>
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════════ */
+    :root {
+      --bg: #06080f;
+      --bg-gradient: linear-gradient(175deg, #06080f 0%, #0c1222 40%, #0b1120 100%);
+      --surface: rgba(22, 33, 62, 0.35);
+      --surface-solid: #111d38;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(56, 189, 248, 0.35);
+      --accent: #38bdf8;
+      --accent-alt: #818cf8;
+      --accent-hover: #22d3ee;
+      --accent-glow: rgba(56, 189, 248, 0.1);
+      --accent-glow-strong: rgba(56, 189, 248, 0.2);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════════════
+       ANIMATED BACKGROUND
+    ═══════════════════════════════════════════════ */
+    .bg-cosmos {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      background: var(--bg-gradient);
+    }
+
+    .bg-cosmos::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.12) 50%, transparent 100%),
+        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.08) 50%, transparent 100%),
+        radial-gradient(1.2px 1.2px at 60% 20%, rgba(255,255,255,0.06) 50%, transparent 100%),
+        radial-gradient(1px 1px at 80% 50%, rgba(255,255,255,0.1) 50%, transparent 100%);
+      animation: starDrift 80s linear infinite;
+    }
+
+    @keyframes starDrift {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-40px); }
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.12;
+      mix-blend-mode: screen;
+      animation: orbFloat 30s infinite alternate ease-in-out;
+    }
+
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: #38bdf8;
+      top: -200px; left: -100px;
+    }
+
+    .orb-2 {
+      width: 500px; height: 500px;
+      background: #818cf8;
+      bottom: -150px; right: -80px;
+      animation-delay: -8s;
+    }
+
+    .orb-3 {
+      width: 400px; height: 400px;
+      background: #f472b6;
+      top: 50%; left: 40%;
+      animation-delay: -15s;
+    }
+
+    .orb-4 {
+      width: 350px; height: 350px;
+      background: #34d399;
+      top: 20%; right: 10%;
+      animation-delay: -22s;
+    }
+
+    @keyframes orbFloat {
+      0%   { transform: translate(0, 0) scale(1); }
+      25%  { transform: translate(80px, 120px) scale(1.15); }
+      50%  { transform: translate(-60px, 60px) scale(0.9); }
+      75%  { transform: translate(40px, -80px) scale(1.05); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* ═══════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════ */
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SCROLL ANIMATIONS
+    ═══════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ═══════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      transition: all 0.4s ease;
+      background: transparent;
+    }
+
+    .navbar.scrolled {
+      background: rgba(6, 8, 15, 0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon-wrap {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+    }
+
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .logo-text span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* ═══════════════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-lg {
+      padding: 15px 32px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       HERO SECTION
+    ═══════════════════════════════════════════════ */
+    .hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 28px;
+      animation: badgePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.15); }
+      50% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); }
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+      line-height: 1.1;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 50%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: gradientShift 6s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-ctas {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════════
+       STATS TICKER
+    ═══════════════════════════════════════════════ */
+    .stats-ticker {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(6, 8, 15, 0.5);
+      overflow: hidden;
+    }
+
+    .stats-grid {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SECTION HEADERS
+    ═══════════════════════════════════════════════ */
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-eyebrow i {
+      font-size: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════
+       FEATURES GRID
+    ═══════════════════════════════════════════════ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(56, 189, 248, 0.05);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feat-icon-box {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+      position: relative;
+    }
+
+    .feat-icon-box.accent   { background: rgba(56,189,248,0.12); color: var(--accent); }
+    .feat-icon-box.success  { background: rgba(52,211,153,0.12); color: var(--success); }
+    .feat-icon-box.warning  { background: rgba(251,191,36,0.12); color: var(--warning); }
+    .feat-icon-box.purple   { background: rgba(167,139,250,0.12); color: var(--purple); }
+    .feat-icon-box.pink     { background: rgba(244,114,182,0.12); color: var(--pink); }
+    .feat-icon-box.danger   { background: rgba(248,113,113,0.12); color: var(--danger); }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .feature-tag {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(56,189,248,0.1);
+    }
+
+    /* ═══════════════════════════════════════════════
+       HOW IT WORKS
+    ═══════════════════════════════════════════════ */
+    .how-it-works {
+      background: rgba(11, 17, 32, 0.5);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .steps-row::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent-alt), transparent);
+      opacity: 0.2;
+    }
+
+    .step-card {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-num {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.25);
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════
+       TECH STACK
+    ═══════════════════════════════════════════════ */
+    .tech-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.25s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .tech-badge:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .tech-badge i {
+      font-size: 18px;
+      color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════════
+       CTA BANNER
+    ═══════════════════════════════════════════════ */
+    .cta-banner {
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(99,102,241,0.08));
+      border: 1px solid rgba(56, 189, 248, 0.12);
+      border-radius: 24px;
+      padding: 64px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(56,189,248,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-card h2 {
+      font-size: clamp(24px, 3.5vw, 36px);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .cta-card p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 500px;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+
+    .cta-card .btn {
+      position: relative;
+    }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    footer {
+      padding: 48px 0 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-link {
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: var(--accent);
+    }
+
+    .pwa-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: rgba(52, 211, 153, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(52, 211, 153, 0.15);
+    }
+
+    /* ═══════════════════════════════════════════════
+       MOBILE HAMBURGER
+    ═══════════════════════════════════════════════ */
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .hero {
+        padding: 130px 0 60px;
+      }
+
+      .stats-grid {
+        gap: 30px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps-row {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .steps-row::before {
+        display: none;
+      }
+
+      .cta-card {
+        padding: 48px 24px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .stat-number {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Animated cosmic background -->
+  <div class="bg-cosmos">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+
+  <!-- ═══════════ NAVIGATION ═══════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="logo-brand">
+        <div class="logo-icon-wrap">
+          <i class="ph-bold ph-wallet"></i>
+        </div>
+        <div class="logo-text">FEE<span>FLOW</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#tech-stack">Tech Stack</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <button id="btn-pwa-install" class="btn btn-ghost" style="display: none;">
+          <i class="ph-bold ph-download-simple"></i> Install
+        </button>
+        <a href="app.html" class="btn btn-primary">
+          Launch App <i class="ph-bold ph-arrow-right"></i>
+        </a>
+      </div>
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+        <i class="ph-bold ph-list"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="container">
+        <div class="hero-badge reveal">
+          <i class="ph-bold ph-lightning"></i>
+          Offline-First PWA — Works Without Internet
+        </div>
+        <h1 class="reveal reveal-delay-1">
+          The Complete <br><span class="gradient-text">Fee Management System</span><br>for Colleges
+        </h1>
+        <p class="hero-subtitle reveal reveal-delay-2">
+          Manage admissions, track student fees & scholarships, verify bank records, send automated notifications — all synced to Google Sheets with full offline support.
+        </p>
+        <div class="hero-ctas reveal reveal-delay-3">
+          <a href="app.html" class="btn btn-primary btn-lg">
+            <i class="ph-bold ph-rocket-launch"></i> Open FeeFlow
+          </a>
+          <button id="btn-pwa-install-hero" class="btn btn-ghost btn-lg" style="display: none;">
+            <i class="ph-bold ph-device-mobile"></i> Install as App
+          </button>
+          <a href="#features" class="btn btn-ghost btn-lg">
+            <i class="ph-bold ph-eye"></i> Explore Features
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ STATS TICKER ═══════════ -->
+    <section class="stats-ticker" style="padding: 40px 0;">
+      <div class="container">
+        <div class="stats-grid reveal">
+          <div class="stat-item">
+            <div class="stat-number" data-count="12">0</div>
+            <div class="stat-label">Power Features</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="100" data-suffix="%">0%</div>
+            <div class="stat-label">Offline Capable</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="0" data-suffix="">
+              <i class="ph-bold ph-google-logo" style="font-size: 28px;"></i>
+            </div>
+            <div class="stat-label">Sheets Powered</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="5">0</div>
+            <div class="stat-label">Chart Types</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="2">0</div>
+            <div class="stat-label">Theme Modes</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ FEATURES ═══════════ -->
+    <section id="features">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-eyebrow"><i class="ph-bold ph-sparkle"></i> Everything You Need</div>
+          <h2 class="section-title">Powerful Features, Zero Compromise</h2>
+          <p class="section-desc">Every tool a college administrator needs to manage fee collection, scholarships, and student data — in one beautiful interface.</p>
+        </div>
+
+        <div class="features-grid">
+
+          <!-- 1. Dashboard -->
+          <div class="feature-card reveal">
+            <div class="feat-icon-box accent"><i class="ph-bold ph-chart-pie-slice"></i></div>
+            <h3>Visual Dashboard</h3>
+            <p>At-a-glance metrics with ECharts visualizations — gauge charts, bar charts, donut breakdowns, rose charts, and gender distribution analysis.</p>
+            <span class="feature-tag">5 Chart Types</span>
+          </div>
+
+          <!-- 2. Student Database -->
+          <div class="feature-card reveal reveal-delay-1">
+            <div class="feat-icon-box accent"><i class="ph-bold ph-users-three"></i></div>
+            <h3>Student Database</h3>
+            <p>Search, filter, and manage the entire student registry. View payment history, cancel or restore admissions, and track every record instantly.</p>
+            <span class="feature-tag">Real-Time Search</span>
+          </div>
+
+          <!-- 3. New Admission -->
+          <div class="feature-card reveal reveal-delay-2">
+            <div class="feat-icon-box success"><i class="ph-bold ph-user-plus"></i></div>
+            <h3>New Admission & Bulk Import</h3>
+            <p>Add students one-by-one or bulk import from Excel files. Auto-generates serial numbers, calculates pending fees, and supports flexible column mapping.</p>
+            <span class="feature-tag">Excel Import</span>
+          </div>
+
+          <!-- 4. Bank Verification -->
+          <div class="feature-card reveal">
+            <div class="feat-icon-box warning"><i class="ph-bold ph-bank"></i></div>
+            <h3>Auto Bank Verification</h3>
+            <p>Upload bank statement PDFs and automatically match transactions with student payments by UTR/Transaction ID and amount for instant verification.</p>
+            <span class="feature-tag">PDF Parsing</span>
+          </div>
+
+          <!-- 5. Reports -->
+          <div class="feature-card reveal reveal-delay-1">
+            <div class="feat-icon-box purple"><i class="ph-bold ph-newspaper-clipping"></i></div>
+            <h3>Reports & Analytics</h3>
+            <p>Class-wise fee summaries with gender breakdowns, collection percentages, scholarship tracking, and one-click Excel export with separate sheets per class.</p>
+            <span class="feature-tag">Export to Excel</span>
+          </div>
+
+          <!-- 6. Custom Export -->
+          <div class="feature-card reveal reveal-delay-2">
+            <div class="feat-icon-box success"><i class="ph-bold ph-download-simple"></i></div>
+            <h3>Custom Excel Export</h3>
+            <p>Choose exactly which columns and classes to export. Generate tailored Excel reports with selected fields — from contact info to scholarship data.</p>
+            <span class="feature-tag">Custom Columns</span>
+          </div>
+
+          <!-- 7. AI Assistant -->
+          <div class="feature-card reveal">
+            <div class="feat-icon-box pink"><i class="ph-bold ph-brain"></i></div>
+            <h3>AI Brain Assistant</h3>
+            <p>Ask natural language questions about your fee data. Powered by OpenRouter or Groq APIs with Llama models — the AI knows all your student records.</p>
+            <span class="feature-tag">AI Powered</span>
+          </div>
+
+          <!-- 8. Communication -->
+          <div class="feature-card reveal reveal-delay-1">
+            <div class="feat-icon-box warning"><i class="ph-bold ph-paper-plane-tilt"></i></div>
+            <h3>Smart Notifications</h3>
+            <p>Send fee reminders and custom announcements to students & parents via email or free SMS through ADB. Monthly automated reminders on the 1st of each month.</p>
+            <span class="feature-tag">Email & SMS</span>
+          </div>
+
+          <!-- 9. Backup & Restore -->
+          <div class="feature-card reveal reveal-delay-2">
+            <div class="feat-icon-box danger"><i class="ph-bold ph-shield-check"></i></div>
+            <h3>Backup & Restore</h3>
+            <p>Auto email backups on startup and shutdown. Download complete data as Excel, or restore from a previous backup file with one-click recovery.</p>
+            <span class="feature-tag">Auto-Backup</span>
+          </div>
+
+          <!-- 10. License System -->
+          <div class="feature-card reveal">
+            <div class="feat-icon-box purple"><i class="ph-bold ph-lock-key"></i></div>
+            <h3>Secure License System</h3>
+            <p>HWID-bound activation with base-64 encoded license keys and HMAC-SHA256 signature verification. Protects student financial data with expiry controls.</p>
+            <span class="feature-tag">HWID Locked</span>
+          </div>
+
+          <!-- 11. Offline + Sync -->
+          <div class="feature-card reveal reveal-delay-1">
+            <div class="feat-icon-box accent"><i class="ph-bold ph-cloud-arrow-up"></i></div>
+            <h3>Offline-First with Sheet Sync</h3>
+            <p>Full offline data entry with queuing. All changes sync back to your centralized Google Sheet automatically when connectivity is restored.</p>
+            <span class="feature-tag">Google Sheets</span>
+          </div>
+
+          <!-- 12. Themes -->
+          <div class="feature-card reveal reveal-delay-2">
+            <div class="feat-icon-box pink"><i class="ph-bold ph-moon-stars"></i></div>
+            <h3>Dark & Light Themes</h3>
+            <p>Beautiful dual-theme design with smooth transitions. A premium dark mode for low-light environments and a clean light mode for daytime use.</p>
+            <span class="feature-tag">Dual Theme</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ HOW IT WORKS ═══════════ -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-eyebrow"><i class="ph-bold ph-path"></i> Simple Setup</div>
+          <h2 class="section-title">Up & Running in 3 Steps</h2>
+          <p class="section-desc">No complicated server setup. Just connect your Google Sheet, import your data, and start managing fees.</p>
+        </div>
+
+        <div class="steps-row">
+          <div class="step-card reveal">
+            <div class="step-num">1</div>
+            <h3>Connect Your Sheet</h3>
+            <p>Link your Google Spreadsheet ID and deploy the Apps Script to create your cloud backend in seconds.</p>
+          </div>
+          <div class="step-card reveal reveal-delay-2">
+            <div class="step-num">2</div>
+            <h3>Import Student Data</h3>
+            <p>Upload your existing Excel with student records. Flexible column mapping handles any format automatically.</p>
+          </div>
+          <div class="step-card reveal reveal-delay-4">
+            <div class="step-num">3</div>
+            <h3>Manage Everything</h3>
+            <p>Track fees, verify payments, send reminders, generate reports — all from one powerful offline-ready dashboard.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ TECH STACK ═══════════ -->
+    <section id="tech-stack">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-eyebrow"><i class="ph-bold ph-code"></i> Built With</div>
+          <h2 class="section-title">Modern Tech Stack</h2>
+          <p class="section-desc">Carefully chosen technologies for maximum performance, reliability, and zero-dependency deployments.</p>
+        </div>
+
+        <div class="tech-badges reveal">
+          <div class="tech-badge"><i class="ph-bold ph-file-html"></i> Vanilla HTML5</div>
+          <div class="tech-badge"><i class="ph-bold ph-file-js"></i> ES6+ JavaScript</div>
+          <div class="tech-badge"><i class="ph-bold ph-file-css"></i> CSS3 Variables</div>
+          <div class="tech-badge"><i class="ph-bold ph-device-mobile"></i> PWA / Service Worker</div>
+          <div class="tech-badge"><i class="ph-bold ph-chart-bar"></i> ECharts 5.5</div>
+          <div class="tech-badge"><i class="ph-bold ph-table"></i> SheetJS (XLSX)</div>
+          <div class="tech-badge"><i class="ph-bold ph-file-pdf"></i> PDF.js</div>
+          <div class="tech-badge"><i class="ph-bold ph-google-logo"></i> Google Apps Script</div>
+          <div class="tech-badge"><i class="ph-bold ph-cloud"></i> Google Sheets API</div>
+          <div class="tech-badge"><i class="ph-bold ph-brain"></i> OpenRouter / Groq AI</div>
+          <div class="tech-badge"><i class="ph-bold ph-text-aa"></i> Inter + Outfit Fonts</div>
+          <div class="tech-badge"><i class="ph-bold ph-shapes"></i> Phosphor Icons</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ CTA BANNER ═══════════ -->
+    <section class="cta-banner">
+      <div class="container">
+        <div class="cta-card reveal">
+          <h2>Ready to Simplify Fee Management?</h2>
+          <p>Start managing your college's entire fee collection process with a single, powerful PWA. No installations, no servers, just open and go.</p>
+          <a href="app.html" class="btn btn-primary btn-lg">
+            <i class="ph-bold ph-rocket-launch"></i> Launch FeeFlow Now
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <div class="logo-icon-wrap" style="width: 28px; height: 28px; font-size: 14px; border-radius: 7px;">
+          <i class="ph-bold ph-wallet"></i>
+        </div>
+        <span class="footer-copy">&copy; 2026 FeeFlow — Powered by VibeMantra Studio</span>
+      </div>
+      <div class="footer-right">
+        <div class="pwa-badge">
+          <i class="ph-bold ph-wifi-slash"></i> Offline Ready
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════ SCRIPTS ═══════════ -->
+  <script>
+    // ── Navbar scroll effect ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Scroll reveal (IntersectionObserver) ──
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ── Animated number counters ──
+    const counterElements = document.querySelectorAll('.stat-number[data-count]');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.count);
+          const suffix = el.dataset.suffix || '';
+          if (target === 0) return;
+          
+          let current = 0;
+          const duration = 2000;
+          const step = target / (duration / 16);
+          
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            el.textContent = Math.floor(current) + suffix;
+          }, 16);
+          
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counterElements.forEach(el => counterObserver.observe(el));
+
+    // ── PWA Install Prompt ──
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.querySelectorAll('[id^="btn-pwa-install"]').forEach(btn => {
+        btn.style.display = 'inline-flex';
+      });
+    });
+
+    document.querySelectorAll('[id^="btn-pwa-install"]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log('Install outcome:', outcome);
+          deferredPrompt = null;
+          document.querySelectorAll('[id^="btn-pwa-install"]').forEach(b => {
+            b.style.display = 'none';
+          });
+        }
+      });
+    });
+
+    // ── Mobile toggle (simple) ──
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        if (navLinks.style.display === 'flex') {
+          navLinks.style.display = 'none';
+        } else {
+          navLinks.style.display = 'flex';
+          navLinks.style.flexDirection = 'column';
+          navLinks.style.position = 'absolute';
+          navLinks.style.top = '100%';
+          navLinks.style.left = '0';
+          navLinks.style.right = '0';
+          navLinks.style.background = 'rgba(6,8,15,0.95)';
+          navLinks.style.backdropFilter = 'blur(20px)';
+          navLinks.style.padding = '20px 24px';
+          navLinks.style.gap = '16px';
+          navLinks.style.borderBottom = '1px solid var(--border)';
+        }
+      });
+    }
+
+    // ── Smooth scroll for anchor links ──
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile nav if open
+          if (navLinks) navLinks.style.display = '';
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

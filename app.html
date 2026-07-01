@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1120" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>FeeFlow — College Fee Management</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="./appstart/appstart.css">
+  <link rel="stylesheet" href="css/app.css">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- CDNs for libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+  <script>
+    // Setup PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+  </script>
+</head>
+
+<body>
+
+  <div class="bg-liquid-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div id="app">
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header" style="padding: 24px 16px 16px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
+        <img src="icons/feeflow-logo.png" class="feeflow-brand-logo" alt="FeeFlow" style="width: auto; object-fit: contain; filter: invert(0.9) hue-rotate(180deg) brightness(1.5) contrast(1.2) drop-shadow(0 0 8px rgba(56, 189, 248, 0.2));">
+        <div class="sidebar-subtitle" style="font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px;">College Fee Management</div>
+        <div class="sidebar-college" id="sidebar-college" style="margin-top: 8px; width: 100%; box-sizing: border-box; text-align: center;">Loading College...</div>
+      </div>
+
+      <ul class="nav-menu">
+        <li class="nav-item active" data-view="dashboard">
+          <i class="ph-bold ph-chart-pie-slice nav-icon"></i> Dashboard
+        </li>
+        <li class="nav-item" data-view="students">
+          <i class="ph-bold ph-users nav-icon"></i> Students
+        </li>
+        <li class="nav-item" data-view="admission">
+          <i class="ph-bold ph-user-plus nav-icon"></i> Admission & Import
+        </li>
+        <li class="nav-item" data-view="reports">
+          <i class="ph-bold ph-newspaper-clipping nav-icon"></i> Reports
+        </li>
+        <li class="nav-item" data-view="export">
+          <i class="ph-bold ph-download-simple nav-icon"></i> Custom Export
+        </li>
+        <li class="nav-item" data-view="communication">
+          <i class="ph-bold ph-paper-plane-tilt nav-icon"></i> Communication
+        </li>
+        <li class="nav-item" data-view="backup">
+          <i class="ph-bold ph-shield-check nav-icon"></i> Backup & Restore
+        </li>
+      </ul>
+
+      <!-- AI Assistant Button (moved downside) -->
+      <div class="nav-item nav-item-ai" data-view="ai" style="margin-top: auto !important; margin-bottom: 8px !important;">
+        <img src="icons/ai-logo.png" alt="AI Assistant" class="ai-nav-logo">
+      </div>
+
+      <div class="sidebar-footer" style="display: flex; justify-content: center; align-items: center; padding: 16px 0;">
+        <div class="theme-toggle-compact theme-dark" id="theme-toggle" role="button" aria-label="Toggle Theme">
+          <div class="toggle-pill">
+            <i class="ph-bold ph-sun toggle-icon sun-icon"></i>
+            <i class="ph-bold ph-moon toggle-icon moon-icon"></i>
+            <div class="toggle-knob"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Top Header Bar -->
+      <header class="header-bar">
+        <div class="header-left">
+          <button class="hamburger" id="hamburger-btn">
+            <i class="ph-bold ph-list"></i>
+          </button>
+          <h2 class="header-title" id="current-view-title">Dashboard</h2>
+        </div>
+
+        <div class="header-right">
+          <button class="btn-sync" id="btn-sync-data" title="Sync Excel Data">
+            <i class="ph ph-arrows-clockwise"></i>
+            <span>Sync</span>
+          </button>
+          <button class="btn btn-lock" id="btn-lock-app" title="Lock App">
+            <i class="ph-fill ph-lock-key"></i>
+            <span>Lock</span>
+          </button>
+          <div class="header-clock" id="header-clock">--:--:--</div>
+          <div class="header-user">
+            <span id="header-username">College Admin</span>
+            <div class="header-avatar" id="header-avatar">AD</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- View Panels -->
+      <div class="view-container">
+
+        <!-- 1. DASHBOARD VIEW -->
+        <div id="view-dashboard" class="view-panel active">
+
+          <div class="filter-bar dashboard-filters"
+            style="display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 10px !important;">
+
+            <div class="filter-row">
+              <span class="filter-row-label"><i class="ph-bold ph-graduation-cap"></i> Class:</span>
+              <div id="class-filter-pills" class="filter-pills-group"></div>
+            </div>
+            <div class="filter-row">
+              <span class="filter-row-label"><i class="ph-bold ph-calendar"></i> Year:</span>
+              <div id="year-filter-pills" class="filter-pills-group"></div>
+            </div>
+          </div>
+
+          <!-- Metrics Row — all 6 in one line -->
+          <div class="metrics-grid">
+            <div class="metric-card accent">
+              <i class="ph-fill ph-users-three metric-icon"></i>
+              <div class="metric-label">Students</div>
+              <div class="metric-value text-accent" id="m-active-students">0</div>
+            </div>
+            <div class="metric-card danger">
+              <i class="ph-fill ph-user-minus metric-icon"></i>
+              <div class="metric-label">Cancelled</div>
+              <div class="metric-value text-danger" id="m-cancelled-students">0</div>
+            </div>
+            <div class="metric-card success">
+              <i class="ph-fill ph-currency-inr metric-icon"></i>
+              <div class="metric-label">Collected</div>
+              <div class="metric-value text-success" id="m-collected-fees">₹0</div>
+            </div>
+            <div class="metric-card warning">
+              <i class="ph-fill ph-hourglass-medium metric-icon"></i>
+              <div class="metric-label">Pending</div>
+              <div class="metric-value text-warning" id="m-pending-fees">₹0</div>
+            </div>
+            <div class="metric-card purple">
+              <i class="ph-fill ph-student metric-icon"></i>
+              <div class="metric-label">Sch. Expected</div>
+              <div class="metric-value text-purple" id="m-sch-expected">₹0</div>
+            </div>
+            <div class="metric-card pink">
+              <i class="ph-fill ph-hand-coins metric-icon"></i>
+              <div class="metric-label">Sch. Received</div>
+              <div class="metric-value text-pink" id="m-sch-received">₹0</div>
+            </div>
+          </div>
+
+          <!-- Charts Section matching blueprint and latest layout adjustments -->
+          <div class="dashboard-charts-layout">
+
+            <!-- Middle Rounded Container: Main Bar Chart (Extended Fully) -->
+            <div class="chart-row-middle">
+              <!-- Left: Collection Rates / Pending Fees Bar Chart -->
+              <div class="chart-card"
+                style="padding: 16px 20px; border-radius: 16px; display: flex; flex-direction: column;">
+                <div
+                  style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                  <h3 class="chart-title" id="bar-chart-title"
+                    style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Class-Wise
+                    Collection Rates</h3>
+                  <div class="toggle-segmented">
+                    <button class="toggle-btn active" id="btn-toggle-collection">Collection Rate</button>
+                    <button class="toggle-btn" id="btn-toggle-pending">Pending Fees</button>
+                  </div>
+                </div>
+                <div class="chart-container" id="main-bar-chart" style="flex: 1; min-height: 350px; width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- Middle Bottom Row: Gender & Caste Distribution (Two Columns) -->
+            <div class="chart-row-bottom-extreme" style="margin-top: 16px;">
+              <div class="chart-card" style="padding: 16px 20px; border-radius: 16px;">
+                <h3 class="chart-title"
+                  style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px;">Gender &
+                  Caste Distribution</h3>
+                <div
+                  style="display: flex; height: 100%; width: 100%; align-items: center; justify-content: space-around; min-height: 280px;">
+                  <div id="chart-gender-donut" style="height: 280px; width: 49%;"></div>
+                  <div style="width: 1px; border-right: 1px dashed var(--border); height: 80%;"></div>
+                  <div id="chart-caste-donut" style="height: 280px; width: 49%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Extreme Bottom Row: Pie Charts (Three Columns, Large Size) -->
+            <div class="chart-row-bottom-pie-charts" style="margin-top: 16px;">
+              <!-- Card 1: Collection Overview -->
+              <div class="chart-card"
+                style="padding: 16px 20px; border-radius: 16px; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+                  <h3 class="chart-title"
+                    style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Collection
+                    Overview</h3>
+                  <div style="display: flex; align-items: baseline; gap: 6px;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Collected:</span>
+                    <span id="info-breakdown-val"
+                      style="font-size: 1.2rem; font-weight: 800; color: var(--success);">₹0</span>
+                  </div>
+                </div>
+                <div class="chart-container" id="chart-breakdown" style="height: 380px; width: 100%;"></div>
+              </div>
+
+              <!-- Card 2: Scholarship Distribution -->
+              <div class="chart-card"
+                style="padding: 16px 20px; border-radius: 16px; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+                  <h3 class="chart-title"
+                    style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Scholarship
+                    Distribution</h3>
+                  <div style="display: flex; align-items: baseline; gap: 6px;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Received:</span>
+                    <span id="info-scholarship-val"
+                      style="font-size: 1.2rem; font-weight: 800; color: var(--purple);">₹0</span>
+                  </div>
+                </div>
+                <div class="chart-container" id="chart-scholarship-pie" style="height: 380px; width: 100%;"></div>
+              </div>
+
+              <!-- Card 3: Total Collection (Fee + Scholarship) -->
+              <div class="chart-card"
+                style="padding: 16px 20px; border-radius: 16px; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+                  <h3 class="chart-title"
+                    style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">Total Collection
+                  </h3>
+                  <div style="display: flex; align-items: baseline; gap: 6px;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Total:</span>
+                    <span id="info-total-collection-val"
+                      style="font-size: 1.2rem; font-weight: 800; color: var(--success);">₹0</span>
+                  </div>
+                </div>
+                <div class="chart-container" id="chart-total-collection" style="height: 380px; width: 100%;"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2. STUDENT DATABASE VIEW -->
+        <div id="view-students" class="view-panel">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+            <div class="search-wrap">
+              <i class="ph-bold ph-magnifying-glass search-icon"></i>
+              <input type="text" class="search-input" id="student-search" placeholder="Search students by name, s...">
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="show-cancelled-check"> Show Cancelled Admissions
+              </label>
+              <button class="btn btn-primary btn-sm" id="btn-upload-statement">
+                <i class="ph-bold ph-file-arrow-up"></i> Auto-Verify Statement
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-bar student-filters"
+            style="margin-bottom: 10px; display: flex; align-items: center; gap: 12px; background: rgba(30, 41, 59, 0.25); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px; width: 100%;">
+            <span class="filter-row-label" style="margin: 0; width: 65px; flex-shrink: 0;"><i
+                class="ph-bold ph-graduation-cap"></i> Class:</span>
+            <div id="student-class-filters" class="filter-pills-group">
+              <!-- Class filters populated dynamically -->
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table" id="students-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Class</th>
+                  <th>Category</th>
+                  <th>Fee Applicable</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="students-table-body">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. NEW ADMISSION & IMPORT VIEW -->
+        <div id="view-admission" class="view-panel">
+          <div class="admission-layout">
+
+            <!-- Manual Registration Form -->
+            <div class="chart-card manual-card">
+              <h3 class="chart-title" style="font-size: 1.1rem; margin-bottom: 24px;">Student Registration Form</h3>
+              <form id="admission-form">
+                <div class="form-grid">
+                  <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" class="form-input" id="adm-name" required
+                      placeholder="Enter student's full name">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Admission No. *</label>
+                    <input type="number" class="form-input" id="adm-serial-no" required
+                      placeholder="Enter Admission No.">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Gender *</label>
+                    <select class="form-select" id="adm-gender" required>
+                      <option value="" disabled selected>Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Student Mobile</label>
+                    <input type="tel" class="form-input" id="adm-student-mobile" placeholder="Student phone number">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Parent Mobile</label>
+                    <input type="tel" class="form-input" id="adm-parent-mobile" placeholder="Parent phone number">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Student Email</label>
+                    <input type="email" class="form-input" id="adm-student-email" placeholder="Student email address">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Parent Email</label>
+                    <input type="email" class="form-input" id="adm-parent-email" placeholder="Parent email address">
+                  </div>
+                  <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Local Address</label>
+                    <input type="text" class="form-input" id="adm-local-address" placeholder="Current address/hostel">
+                  </div>
+                  <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Permanent Address</label>
+                    <input type="text" class="form-input" id="adm-permanent-address"
+                      placeholder="Home/permanent address">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Year of Admission</label>
+                    <input type="number" class="form-input" id="adm-year" placeholder="e.g. 2026">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="adm-category">
+                      <option value="General">General</option>
+                      <option value="OBC">OBC</option>
+                      <option value="SC">SC</option>
+                      <option value="ST">ST</option>
+                      <option value="NT">NT</option>
+                      <option value="VJ-DT">VJ-DT</option>
+                      <option value="EWS">EWS</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Current Class *</label>
+                    <select class="form-select" id="adm-class" required>
+                      <option value="B.Pharm 1st Year">B.Pharm 1st Year</option>
+                      <option value="B.Pharm 2nd Year">B.Pharm 2nd Year</option>
+                      <option value="B.Pharm 3rd Year">B.Pharm 3rd Year</option>
+                      <option value="B.Pharm Final Year">B.Pharm Final Year</option>
+                      <option value="M.Pharm 1st Year">M.Pharm 1st Year</option>
+                      <option value="M.Pharm 2nd Year">M.Pharm 2nd Year</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Academic Year</label>
+                    <input type="text" class="form-input" id="adm-academic-year" placeholder="e.g. 2025-2026">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Fee Applicable (₹)</label>
+                    <input type="number" class="form-input calc-trigger" id="adm-fee-applicable" value="0">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Fee Paid (₹)</label>
+                    <input type="number" class="form-input calc-trigger" id="adm-fee-paid" value="0">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Scholarship Expected (₹)</label>
+                    <input type="number" class="form-input calc-trigger" id="adm-sch-expected" value="0">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Scholarship Received (₹)</label>
+                    <input type="number" class="form-input calc-trigger" id="adm-sch-received" value="0">
+                  </div>
+
+                  <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Remark</label>
+                    <input type="text" class="form-input" id="adm-remark" placeholder="Any special notes or references">
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+                  <button type="button" class="btn btn-ghost" id="btn-adm-clear">Clear Form</button>
+                  <button type="submit" class="btn btn-primary">Register Student</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Bulk Import Card -->
+            <div class="chart-card upload-card" style="text-align: center;">
+              <h3 class="chart-title" style="font-size: 1.1rem; margin-bottom: 20px;">Bulk Import Student Records</h3>
+
+              <div class="upload-zone" id="upload-zone-students"
+                style="padding: 30px 16px; border: 2px dashed var(--border); border-radius: var(--radius); cursor: pointer; transition: all var(--transition);">
+                <i class="ph-bold ph-file-xls" style="font-size: 48px; color: var(--accent); margin-bottom: 12px;"></i>
+                <div style="font-size: 1rem; font-weight: 600; margin-bottom: 8px;">Drag & Drop Excel File here</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px;">Supports .xlsx and .xls
+                  formats</div>
+                <input type="file" id="student-file-input" accept=".xlsx, .xls" style="display: none;">
+                <button class="btn btn-outline" type="button"
+                  onclick="document.getElementById('student-file-input').click()">
+                  Browse Files
+                </button>
+              </div>
+
+              <div id="upload-status" style="margin-top: 20px; display: none;">
+                <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;" id="upload-status-text">
+                  Processing file...</div>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar-fill" id="upload-progress-bar" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <div style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <a href="#" class="btn btn-ghost" id="btn-download-template"
+                  style="gap: 8px; justify-content: center; width: 100%;">
+                  <i class="ph-bold ph-download-simple"></i> Download Blank Import Template
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 5. REPORTS VIEW -->
+        <div id="view-reports" class="view-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 class="chart-title" style="margin: 0; font-size: 1rem;">Class-Wise Fee Collection Summary</h3>
+            <button class="btn btn-success" id="btn-export-reports">
+              <i class="ph-bold ph-file-xls"></i> Export to Excel
+            </button>
+          </div>
+
+          <div class="table-wrapper" style="max-height: 600px; overflow-y: auto;">
+            <table class="data-table" id="reports-table">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th style="text-align: center;">Total Students</th>
+                  <th>Fee Applicable</th>
+                  <th>Fee Collected</th>
+                  <th>Fee Pending</th>
+                  <th>Sch. Expected</th>
+                  <th>Sch. Received</th>
+                  <th>Sch. Pending</th>
+                  <th>Total Pending</th>
+                  <th>Collection Rate</th>
+                </tr>
+              </thead>
+              <tbody id="reports-table-body">
+                <!-- Populated Dynamically -->
+              </tbody>
+              <tfoot id="reports-table-foot">
+                <!-- Sums Populated Dynamically -->
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- High Risk Students -->
+          <div class="chart-card high-risk-card"
+            style="margin-top: 24px; padding: 16px 20px; border-radius: 16px; display: flex; flex-direction: column; flex: 1; min-height: 200px; margin-bottom: 16px;">
+            <div
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <h3 class="chart-title"
+                style="font-size: 1rem; font-weight: 700; color: var(--danger); margin: 0; display: flex; align-items: center; gap: 8px;">
+                <i class="ph-fill ph-warning-circle"></i> High Risk Students
+              </h3>
+              <span class="badge"
+                style="background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700;">Pending
+                > 60%</span>
+            </div>
+            <div class="high-risk-list-container"
+              style="flex: 1; overflow: hidden; padding-right: 4px; position: relative;">
+              <ul id="high-risk-students-list" class="high-risk-list">
+                <!-- Populated dynamically -->
+                <div class="high-risk-empty">
+                  <i class="ph-bold ph-check-circle" style="font-size: 2rem; color: var(--success);"></i>
+                  <span>No high risk students found</span>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. CUSTOM EXPORT VIEW -->
+        <div id="view-export" class="view-panel">
+          <div class="chart-card" style="width: 100%; max-width: 800px; margin: 0 auto;">
+            <h3 class="chart-title" style="font-size: 1.1rem; margin-bottom: 24px;">Export Custom Student Excel Report
+            </h3>
+
+            <div style="margin-bottom: 24px;">
+              <h4
+                style="font-size: 0.85rem; color: var(--accent); margin-bottom: 12px; font-weight: 600; text-transform: uppercase;">
+                Step 1: Select Columns to Include
+              </h4>
+              <div id="export-columns-grid" class="checkbox-grid">
+                <!-- Dynamically Populated Columns Checkboxes -->
+              </div>
+            </div>
+
+            <div style="margin-bottom: 24px; border-top: 1px solid var(--border); padding-top: 20px;">
+              <h4
+                style="font-size: 0.85rem; color: var(--accent); margin-bottom: 12px; font-weight: 600; text-transform: uppercase;">
+                Step 2: Select Classes to Include
+              </h4>
+              <div id="export-classes-grid" class="checkbox-grid">
+                <!-- Dynamically Populated Classes Checkboxes -->
+              </div>
+            </div>
+
+            <div
+              style="display: flex; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 20px;">
+              <button class="btn btn-success btn-lg" id="btn-custom-export-submit" style="min-width: 180px;">
+                <i class="ph-bold ph-file-xls"></i> Export Custom Excel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. COMMUNICATION VIEW -->
+        <div id="view-communication" class="view-panel">
+          <div class="charts-grid" style="grid-template-columns: 1fr 1fr; align-items: start;">
+
+            <!-- Send Notification Form -->
+            <div class="chart-card">
+              <h3 class="chart-title">Send Custom Announcement</h3>
+              <form id="communication-form">
+                <div class="form-group" style="margin-bottom: 16px;">
+                  <label class="form-label">Recipient Group</label>
+                  <select class="form-select" id="comm-recipient" required>
+                    <option value="both">All Students & Parents</option>
+                    <option value="parents">Parents Only</option>
+                    <option value="students">Students Only</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                  <label class="form-label">Message Content</label>
+                  <textarea class="form-input" id="comm-message" rows="6" required
+                    placeholder="Type your announcement details here..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                  <i class="ph-bold ph-paper-plane-tilt"></i> Dispatch Announcements
+                </button>
+              </form>
+            </div>
+
+            <!-- Automated Fee Dues Dispatch Card -->
+            <div class="chart-card">
+              <h3 class="chart-title">Direct Fee Dues Reminders</h3>
+              <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                Directly compile and dispatch email fee reminders to all active students with outstanding balances.
+                Uses the configured Gmail integration settings.
+              </div>
+              <button class="btn btn-danger" id="btn-send-fee-dues-reminders"
+                style="width: 100%; border-radius: var(--radius-md); font-weight: 600; padding: 12px 20px;">
+                <i class="ph-bold ph-bell-ringing"></i> Dispatch Dues Reminders Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Configuration & SMS guide -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+
+            <!-- Credentials Card -->
+            <div class="chart-card">
+              <h3 class="chart-title">Gmail Integration Settings</h3>
+              <form id="credentials-form">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label class="form-label">Gmail Address</label>
+                  <input type="email" class="form-input" id="gmail-address" placeholder="e.g. college@gmail.com">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label class="form-label">App Password</label>
+                  <input type="password" class="form-input" id="gmail-app-password"
+                    placeholder="16-character google app password">
+                </div>
+                <div class="form-group"
+                  style="margin-bottom: 16px; flex-direction: row; align-items: center; gap: 8px;">
+                  <input type="checkbox" id="auto-send-emails"
+                    style="width: 16px; height: 16px; accent-color: var(--accent);">
+                  <label for="auto-send-emails" class="form-label"
+                    style="text-transform: none; font-size: 0.85rem; letter-spacing: normal; cursor: pointer; color: var(--text-secondary); margin-bottom: 0;">
+                    Auto-send monthly pending fee reminders (1st of every month)
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-ghost" style="width: 100%;">
+                  Save Credentials
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. BACKUP & RESTORE VIEW -->
+      <div id="view-backup" class="view-panel">
+        <div class="charts-grid" style="grid-template-columns: 1fr 1fr; align-items: start;">
+
+          <!-- Email Backup Card -->
+          <div class="chart-card">
+            <h3 class="chart-title">Data Backup (GSheets Sync)</h3>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
+              Your student fee and transaction tables are fully secured in the connected Google Spreadsheet.
+              You can manually export all tables as a local Excel file backup anytime.
+            </div>
+            <button class="btn btn-primary" id="btn-manual-backup" style="width: 100%; margin-bottom: 16px;">
+              <i class="ph-bold ph-download-simple"></i> Download Local Excel Backup
+            </button>
+            <button class="btn btn-ghost" id="btn-email-backup" style="width: 100%;">
+              <i class="ph-bold ph-envelope"></i> Send Excel Backup to Admin Gmail
+            </button>
+          </div>
+
+          <!-- Restore Database Card -->
+          <div class="chart-card">
+            <h3 class="chart-title">Restore Database</h3>
+            <div class="badge badge-danger" style="margin-bottom: 12px; gap: 4px;">
+              <i class="ph-bold ph-warning"></i> DESTRUCTIVE ACTION
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
+              Uploading a previously exported backup file will wipe all current student rows and transaction records,
+              and replace them with the backup tables.
+            </div>
+            <div class="upload-zone" id="upload-zone-restore" style="padding: 20px;">
+              <i class="ph-bold ph-arrow-counter-clockwise"
+                style="font-size: 32px; color: var(--danger); margin-bottom: 8px;"></i>
+              <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 12px;">Upload Backup Excel (.xlsx)</div>
+              <input type="file" id="restore-file-input" accept=".xlsx" style="display: none;">
+              <button class="btn btn-danger btn-sm" onclick="document.getElementById('restore-file-input').click()">
+                Select Backup File
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. AI ASSISTANT VIEW -->
+      <div id="view-ai" class="view-panel">
+        <div class="ai-view-container"
+          style="display: flex; flex-direction: column; height: 100%; gap: 16px; overflow: hidden; position: relative; padding-bottom: 12px;">
+
+          <!-- AI Setup (collapsible header card) -->
+          <div class="chart-card" id="ai-settings-card"
+            style="flex-shrink: 0; padding: 12px 16px; border: 1px solid rgba(56, 189, 248, 0.2); background: rgba(15, 23, 42, 0.6); margin-bottom: 2px;">
+             <div class="settings-toggle-header"
+               style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; gap: 16px;"
+               id="ai-settings-toggle">
+               <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                 <i class="ph-bold ph-sliders" style="color: var(--accent); font-size: 1.1rem;"></i>
+                 <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">AI Setup</span>
+                 <span class="badge" id="ai-status-badge"
+                   style="font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: rgba(239, 68, 68, 0.15); color: var(--danger); font-weight: 600;">API
+                   Key Missing</span>
+               </div>
+               
+               <!-- Sleek pulsing warning bar -->
+               <div class="warning-v5" 
+                    style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 6px; background: linear-gradient(90deg, rgba(255,20,20,0.12), rgba(255,20,20,0.04)); border: 1px solid rgba(255,20,20,0.25); position: relative; overflow: hidden; font-size: 0.76rem; color: #ff3333; font-weight: 700; flex: 0 1 auto; width: fit-content; margin: 0 16px; max-width: 480px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+                 <i class="ph-bold ph-warning-circle warning-icon" style="color: #ff0000; font-size: 1.05rem;"></i>
+                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none; letter-spacing: 0.1px;">AI feature is experimental, verify data for final conclusion.</span>
+               </div>
+               
+               <i class="ph-bold ph-caret-down" id="ai-settings-caret"
+                 style="font-size: 1rem; color: var(--text-secondary); transition: transform 0.3s ease; flex-shrink: 0;"></i>
+             </div>
+
+            <div class="settings-content" id="ai-settings-content"
+              style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; margin-top: 0;">
+              <div style="display: flex; flex-direction: column; gap: 16px; padding: 12px 0 6px 0;">
+                <div class="form-group">
+                  <label class="form-label" style="font-size: 0.75rem;">API Key (Free Auto-Model
+                    routing)</label>
+                  <div style="position: relative; display: flex; align-items: center;">
+                    <input type="password" class="form-input" id="ai-api-key" placeholder="sk-or-v1-..."
+                      style="width: 100%; padding-right: 0px;">
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-ai-save">
+                  <i class="ph-bold ph-floppy-disk"></i> Save Key
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat history thread -->
+          <div class="chart-card"
+            style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 16px;">
+            <div class="chat-messages" id="ai-chat-messages"
+              style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding-right: 4px; margin-bottom: 12px;">
+              <!-- Initial welcome message -->
+              <div class="chat-bubble ai-bubble">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                  <i class="ph-bold ph-sparkle" style="color: var(--accent); font-size: 1rem;"></i>
+                  <span style="font-weight: 600; font-size: 0.8rem; color: var(--text-secondary);">College Fee AI
+                    Assistant</span>
+                </div>
+                <div class="chat-message-text" style="font-size: 0.9rem; line-height: 1.5; color: var(--text-primary);">
+                  Hello! I am your AI Database Analyst. I have secure, real-time access to the student roster and
+                  transactions database. Ask me anything about class stats, pending dues, or caste-wise collections.
+                </div>
+              </div>
+            </div>
+
+            <!-- Suggested chips -->
+            <div class="ai-chips-container"
+              style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; flex-shrink: 0;">
+              <button class="filter-btn ai-chip" data-prompt="Show a summary of pending dues by Class.">
+                <i class="ph-bold ph-chart-bar" style="margin-right: 4px;"></i> Summary of pending dues by Class
+              </button>
+              <button class="filter-btn ai-chip" data-prompt="Which students have pending dues greater than ₹50,000?">
+                <i class="ph-bold ph-warning-circle" style="margin-right: 4px;"></i> Pending dues > ₹50,000
+              </button>
+              <button class="filter-btn ai-chip" data-prompt="List all caste-wise scholarship collections.">
+                <i class="ph-bold ph-users-three" style="margin-right: 4px;"></i> Caste-wise scholarship summary
+              </button>
+            </div>
+
+            <!-- Chat Prompt Form -->
+            <form id="ai-chat-form" style="display: flex; gap: 10px; flex-shrink: 0; align-items: flex-end;">
+              <div style="flex: 1; position: relative;">
+                <textarea id="ai-chat-input" class="form-input"
+                  placeholder="Ask AI about student dues, collections, or custom reports..."
+                  style="width: 100%; height: 50px; min-height: 50px; max-height: 120px; resize: vertical; padding-right: 40px; line-height: 1.4; font-size: 0.95rem;"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" id="btn-send-ai"
+                style="height: 50px; width: 50px; padding: 0; flex-shrink: 0;">
+                <i class="ph-bold ph-paper-plane-tilt" style="font-size: 1.3rem;"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+  </div>
+  </main>
+
+  </div>
+
+  <!-- POPUP MODALS -->
+
+  <!-- Modal Backdrop & Modal Box -->
+  <div id="modal-backdrop" class="modal-backdrop">
+    <div class="modal" id="app-modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Modal Title</h3>
+        <button class="modal-close" onclick="App.closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="modal-footer" id="modal-footer">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div id="confirm-backdrop" class="modal-backdrop">
+    <div class="modal" style="max-width: 400px; padding: 4px;">
+      <div class="modal-header" style="border-bottom:none; padding-bottom:0;">
+        <h3 class="modal-title" id="confirm-title" style="font-size: 1.15rem; color: var(--text-primary);">Confirm
+          Action</h3>
+      </div>
+      <div class="modal-body" id="confirm-body"
+        style="padding-top: 16px; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+        Are you sure you want to proceed?
+      </div>
+      <div class="modal-footer" style="border-top:none; padding-top:24px; gap: 8px;">
+        <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+        <button class="btn btn-primary" id="confirm-ok">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN LOCK OVERLAY -->
+  <div id="pin-lock-overlay" style="position:fixed;inset:0;z-index:100000;display:none;
+       background:#0b1120;align-items:center;justify-content:center;padding:20px;">
+    
+    <div style="background:rgba(17, 24, 39, 0.75); border:1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; 
+         padding: 40px; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; 
+         gap: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+         
+      <img src="icons/feeflow-logo.png" class="feeflow-brand-logo lock-logo" alt="FeeFlow Logo" 
+           style="height: 180px; width: auto; object-fit: contain; filter: invert(0.9) hue-rotate(180deg) brightness(1.5) contrast(1.2) drop-shadow(0 0 12px rgba(56, 189, 248, 0.35)); margin-bottom: 8px;">
+      
+      <div style="text-align: center;">
+        <div id="pin-lock-title" style="font-size:1.4rem;font-weight:700;color:#f1f5f9;margin-bottom:6px;">App Locked</div>
+        <div style="font-size:0.85rem;color:#94a3b8;">Enter your 4-digit PIN to continue</div>
+      </div>
+      
+      <input id="pin-lock-input" type="password" inputmode="numeric" maxlength="4" style="width:180px;text-align:center;font-size:1.8rem;letter-spacing:0.6rem;padding:12px;
+        background:#0b1120;border:1px solid #374151;border-radius:10px;color:#f1f5f9;outline:none;box-sizing:border-box;">
+      
+      <div id="pin-lock-error" style="color:#f87171;font-size:0.8rem;min-height:16px;text-align:center;margin-top:-8px;"></div>
+      
+      <button id="pin-lock-btn" class="btn btn-primary" style="width: 100%; max-width: 220px; padding: 12px; font-weight: 600;">Unlock</button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JS modules & scripts -->
+  <script src="./appstart/config.js"></script>
+  <script src="./appstart/license.js"></script>
+  <script src="./appstart/keystore.js"></script>
+
+  <script type="module">
+    import { Translator } from './appstart/translator.js';
+    import { SchemaLearner } from './appstart/schema.js';
+    window.Translator = Translator;
+    window.SchemaLearner = SchemaLearner;
+  </script>
+
+  <script src="./appstart/appstart.js"></script>
+
+  <!-- Central PWA Module script references -->
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- BOOTSTRAP WIRING -->
+  <script>
+    document.addEventListener('appstart:complete', async (e) => {
+      console.log("🏁 AppStart Complete. Bootstrapping app details...");
+      window.appStartContext = e.detail;
+
+      try {
+        await App.initFromEngine(window.appStartContext);
+        console.log("✅ PWA successfully initialized.");
+      } catch (err) {
+        console.error("❌ App Initialization Failed:", err);
+        document.getElementById('app').innerHTML = `
+          <div style="background:#0b1120; color:#f87171; padding:40px; text-align:center; font-family:sans-serif; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <i class="ph-bold ph-warning-octagon" style="font-size:48px; margin-bottom:16px;"></i>
+            <h3 style="margin-bottom:10px; font-size:1.4rem;">Application Error</h3>
+            <p style="opacity:0.8; font-size:14px; margin-bottom:20px; max-width:400px;">${err.message}</p>
+            <button onclick="location.reload()" style="background:#38bdf8; color:#0b1120; border:none; padding:10px 24px; border-radius:6px; cursor:pointer; font-weight:700;">Retry Boot</button>
+          </div>`;
+      }
+    });
+
+    // Fire AppStart
+    AppStart.init();
+  </script>
+
+  <!-- Service Worker registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => {
+            console.log('SW Registered with scope:', reg.scope);
+            setInterval(() => reg.update(), 60000);
+            reg.addEventListener('updatefound', () => {
+              const newWorker = reg.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
+                  window.location.reload(true);
+                }
+              });
+            });
+          })
+          .catch(err => console.warn('SW Register Failed:', err));
+
+        let swController = !!navigator.serviceWorker.controller;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (swController) window.location.reload(true);
+          swController = true;
+        });
+      });
+    }
+  </script>
+
+</body>
+
+</html>
