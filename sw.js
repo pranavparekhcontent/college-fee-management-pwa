@@ -7,7 +7,7 @@
 //    version.json → NETWORK-ONLY
 // ============================================================
 
-const CACHE_VERSION = 'feemanager-v1.0.49';
+const CACHE_VERSION = 'feemanager-v1.0.50';
 const ASSETS = [
   './',
   './app.html',
