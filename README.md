@@ -63,9 +63,8 @@
 - System prompt auto-includes all student data and dashboard metrics
 
 ### 📧 Smart Notifications
-- Send custom announcements via **Email** or **SMS**
+- Send custom announcements via **Email**
 - Recipients: All Students & Parents / Parents Only / Students Only
-- **ADB SMS integration** for free SMS via connected Android phone
 - **Automated monthly reminders** (1st of each month at 10 AM)
 
 ### 🛡️ Backup & Restore
