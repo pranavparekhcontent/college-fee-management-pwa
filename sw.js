@@ -1,5 +1,5 @@
 // ============================================================
-//  Fee Manager — Service Worker v1.0.48
+//  Fee Manager — Service Worker v1.0.50
 //  STRATEGY:
 //    HTML pages → NETWORK-FIRST
 //    Static assets → CACHE-FIRST with background refresh
