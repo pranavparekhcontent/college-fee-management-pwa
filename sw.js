@@ -1,5 +1,5 @@
 // ============================================================
-//  Fee Manager — Service Worker v1.0.50
+//  Fee Manager — Service Worker v1.0.51
 //  STRATEGY:
 //    HTML pages → NETWORK-FIRST
 //    Static assets → CACHE-FIRST with background refresh
@@ -7,7 +7,7 @@
 //    version.json → NETWORK-ONLY
 // ============================================================
 
-const CACHE_VERSION = 'feemanager-v1.0.50';
+const CACHE_VERSION = 'feemanager-v1.0.51';
 const ASSETS = [
   './',
   './app.html',
