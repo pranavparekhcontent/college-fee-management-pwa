@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pranavparekhcontent.github.io/college-fee-management-pwa/sitemap.xml
