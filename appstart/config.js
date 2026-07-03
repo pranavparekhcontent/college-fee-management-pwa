@@ -1,13 +1,13 @@
 // ============================================================
-//  APPSTART CONFIG — College Fee Management System
+//  APPSTART CONFIG — FeeNext College Fee Management System
 //  All other appstart/ files remain untouched between projects.
 // ============================================================
 
 const APP_CONFIG = {
 
   // ── App Identity ──────────────────────────────────────────
-  APP_NAME: "FEEFLOW",
-  APP_VERSION: "1.0.48",
+  APP_NAME: "FEENEXT",
+  APP_VERSION: "1.0.52",
 
   // ── Layout ───────────────────────────────────────────────
   LAYOUT: "desktop-first",

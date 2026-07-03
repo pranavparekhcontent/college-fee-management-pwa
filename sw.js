@@ -1,5 +1,5 @@
 // ============================================================
-//  Fee Manager — Service Worker v1.0.51
+//  FeeNext — Service Worker v1.0.52
 //  STRATEGY:
 //    HTML pages → NETWORK-FIRST
 //    Static assets → CACHE-FIRST with background refresh
@@ -7,7 +7,7 @@
 //    version.json → NETWORK-ONLY
 // ============================================================
 
-const CACHE_VERSION = 'feemanager-v1.0.51';
+const CACHE_VERSION = 'feemanager-v1.0.52';
 const ASSETS = [
   './',
   './app.html',
@@ -24,7 +24,8 @@ const ASSETS = [
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './icons/feeflow-logo.png',
+  './FeeNext_horizontal_light-mode.png',
+  './FeeNext_horizontal_dark-mode.png',
   './icons/ai-logo.png',
   // CDN dependencies pre-caching:
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap',

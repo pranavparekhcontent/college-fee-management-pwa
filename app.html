@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0b1120" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>FeeFlow Dashboard — College Fee & Scholarship Management</title>
+  <title>FeeNext Dashboard — College Fee & Scholarship Management</title>
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://pranavparekhcontent.github.io/college-fee-management-pwa/app.html" />
@@ -16,26 +16,30 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/app.html" />
-  <meta property="og:title" content="FeeFlow Dashboard — College Fee & Scholarship Management" />
-  <meta property="og:description" content="Access FeeFlow's secure student fee records, scholarship distribution status, automated reporting, and real-time dashboard." />
-  <meta property="og:image" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
-  <meta property="og:site_name" content="FeeFlow" />
+  <meta property="og:title" content="FeeNext Dashboard — College Fee & Scholarship Management" />
+  <meta property="og:description"
+    content="Access FeeNext's secure student fee records, scholarship distribution status, automated reporting, and real-time dashboard." />
+  <meta property="og:image"
+    content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
+  <meta property="og:site_name" content="FeeNext" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/app.html" />
-  <meta property="twitter:title" content="FeeFlow Dashboard — College Fee & Scholarship Management" />
-  <meta property="twitter:description" content="Access FeeFlow's secure student fee records, scholarship distribution status, automated reporting, and real-time dashboard." />
-  <meta property="twitter:image" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
+  <meta property="twitter:title" content="FeeNext Dashboard — College Fee & Scholarship Management" />
+  <meta property="twitter:description"
+    content="Access FeeNext's secure student fee records, scholarship distribution status, automated reporting, and real-time dashboard." />
+  <meta property="twitter:image"
+    content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "FeeFlow App",
+    "name": "FeeNext App",
     "url": "https://pranavparekhcontent.github.io/college-fee-management-pwa/app.html",
-    "description": "Access FeeFlow's secure student fee records, scholarship distribution status, automated reporting, and real-time dashboard.",
+    "description": "Access FeeNext's secure student fee records, scholarship distribution status, automated reporting, and real-time dashboard.",
     "applicationCategory": "EducationalApplication, BusinessApplication",
     "operatingSystem": "All"
   }
@@ -77,10 +81,15 @@
 
     <!-- Left Sidebar -->
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header" style="padding: 24px 16px 16px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
-        <img src="icons/feeflow-logo.png" class="feeflow-brand-logo" alt="FeeFlow" style="width: auto; object-fit: contain; filter: invert(0.9) hue-rotate(180deg) brightness(1.5) contrast(1.2) drop-shadow(0 0 8px rgba(56, 189, 248, 0.2));">
-        <div class="sidebar-subtitle" style="font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px;">College Fee Management</div>
-        <div class="sidebar-college" id="sidebar-college" style="margin-top: 8px; width: 100%; box-sizing: border-box; text-align: center;">Loading College...</div>
+      <div class="sidebar-header"
+        style="padding: 24px 16px 16px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
+        <img src="FeeNext_horizontal_light-mode.png" class="feenext-brand-logo" alt="FeeNext"
+          style="width: auto; object-fit: contain;">
+        <div class="sidebar-subtitle"
+          style="font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px;">
+          College Fee Management</div>
+        <div class="sidebar-college" id="sidebar-college"
+          style="margin-top: 8px; width: 100%; box-sizing: border-box; text-align: center;">Loading College...</div>
       </div>
 
       <ul class="nav-menu">
@@ -108,7 +117,8 @@
       </ul>
 
       <!-- AI Assistant Button (moved downside) -->
-      <div class="nav-item nav-item-ai" data-view="ai" style="margin-top: auto !important; margin-bottom: 8px !important;">
+      <div class="nav-item nav-item-ai" data-view="ai"
+        style="margin-top: auto !important; margin-bottom: 8px !important;">
         <img src="icons/ai-logo.png" alt="AI Assistant" class="ai-nav-logo">
       </div>
 
@@ -713,27 +723,29 @@
           <!-- AI Setup (collapsible header card) -->
           <div class="chart-card" id="ai-settings-card"
             style="flex-shrink: 0; padding: 12px 16px; border: 1px solid rgba(56, 189, 248, 0.2); background: rgba(15, 23, 42, 0.6); margin-bottom: 2px;">
-             <div class="settings-toggle-header"
-               style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; gap: 16px;"
-               id="ai-settings-toggle">
-               <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                 <i class="ph-bold ph-sliders" style="color: var(--accent); font-size: 1.1rem;"></i>
-                 <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">AI Setup</span>
-                 <span class="badge" id="ai-status-badge"
-                   style="font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: rgba(239, 68, 68, 0.15); color: var(--danger); font-weight: 600;">API
-                   Key Missing</span>
-               </div>
-               
-               <!-- Sleek pulsing warning bar -->
-               <div class="warning-v5" 
-                    style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 6px; background: linear-gradient(90deg, rgba(255,20,20,0.12), rgba(255,20,20,0.04)); border: 1px solid rgba(255,20,20,0.25); position: relative; overflow: hidden; font-size: 0.76rem; color: #ff3333; font-weight: 700; flex: 0 1 auto; width: fit-content; margin: 0 16px; max-width: 480px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
-                 <i class="ph-bold ph-warning-circle warning-icon" style="color: #ff0000; font-size: 1.05rem;"></i>
-                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none; letter-spacing: 0.1px;">AI feature is experimental, verify data for final conclusion.</span>
-               </div>
-               
-               <i class="ph-bold ph-caret-down" id="ai-settings-caret"
-                 style="font-size: 1rem; color: var(--text-secondary); transition: transform 0.3s ease; flex-shrink: 0;"></i>
-             </div>
+            <div class="settings-toggle-header"
+              style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; gap: 16px;"
+              id="ai-settings-toggle">
+              <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                <i class="ph-bold ph-sliders" style="color: var(--accent); font-size: 1.1rem;"></i>
+                <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">AI Setup</span>
+                <span class="badge" id="ai-status-badge"
+                  style="font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: rgba(239, 68, 68, 0.15); color: var(--danger); font-weight: 600;">API
+                  Key Missing</span>
+              </div>
+
+              <!-- Sleek pulsing warning bar -->
+              <div class="warning-v5"
+                style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 6px; background: linear-gradient(90deg, rgba(255,20,20,0.12), rgba(255,20,20,0.04)); border: 1px solid rgba(255,20,20,0.25); position: relative; overflow: hidden; font-size: 0.76rem; color: #ff3333; font-weight: 700; flex: 0 1 auto; width: fit-content; margin: 0 16px; max-width: 480px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+                <i class="ph-bold ph-warning-circle warning-icon" style="color: #ff0000; font-size: 1.05rem;"></i>
+                <span
+                  style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none; letter-spacing: 0.1px;">AI
+                  feature is experimental, verify data for final conclusion.</span>
+              </div>
+
+              <i class="ph-bold ph-caret-down" id="ai-settings-caret"
+                style="font-size: 1rem; color: var(--text-secondary); transition: transform 0.3s ease; flex-shrink: 0;"></i>
+            </div>
 
             <div class="settings-content" id="ai-settings-content"
               style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; margin-top: 0;">
@@ -849,25 +861,30 @@
   <!-- PIN LOCK OVERLAY -->
   <div id="pin-lock-overlay" style="position:fixed;inset:0;z-index:100000;display:none;
        background:#0b1120;align-items:center;justify-content:center;padding:20px;">
-    
-    <div style="background:rgba(17, 24, 39, 0.75); border:1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; 
+
+    <div
+      style="background:rgba(17, 24, 39, 0.75); border:1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; 
          padding: 40px; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; 
          gap: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-         
-      <img src="icons/feeflow-logo.png" class="feeflow-brand-logo lock-logo" alt="FeeFlow Logo" 
-           style="height: 180px; width: auto; object-fit: contain; filter: invert(0.9) hue-rotate(180deg) brightness(1.5) contrast(1.2) drop-shadow(0 0 12px rgba(56, 189, 248, 0.35)); margin-bottom: 8px;">
-      
+
+      <img src="FeeNext_horizontal_light-mode.png" class="feenext-brand-logo lock-logo" alt="FeeNext Logo"
+        style="height: 180px; width: auto; object-fit: contain; margin-bottom: 8px;">
+
       <div style="text-align: center;">
-        <div id="pin-lock-title" style="font-size:1.4rem;font-weight:700;color:#f1f5f9;margin-bottom:6px;">App Locked</div>
+        <div id="pin-lock-title" style="font-size:1.4rem;font-weight:700;color:#f1f5f9;margin-bottom:6px;">App Locked
+        </div>
         <div style="font-size:0.85rem;color:#94a3b8;">Enter your 4-digit PIN to continue</div>
       </div>
-      
-      <input id="pin-lock-input" type="password" inputmode="numeric" maxlength="4" style="width:180px;text-align:center;font-size:1.8rem;letter-spacing:0.6rem;padding:12px;
+
+      <input id="pin-lock-input" type="password" inputmode="numeric" maxlength="4"
+        style="width:180px;text-align:center;font-size:1.8rem;letter-spacing:0.6rem;padding:12px;
         background:#0b1120;border:1px solid #374151;border-radius:10px;color:#f1f5f9;outline:none;box-sizing:border-box;">
-      
-      <div id="pin-lock-error" style="color:#f87171;font-size:0.8rem;min-height:16px;text-align:center;margin-top:-8px;"></div>
-      
-      <button id="pin-lock-btn" class="btn btn-primary" style="width: 100%; max-width: 220px; padding: 12px; font-weight: 600;">Unlock</button>
+
+      <div id="pin-lock-error"
+        style="color:#f87171;font-size:0.8rem;min-height:16px;text-align:center;margin-top:-8px;"></div>
+
+      <button id="pin-lock-btn" class="btn btn-primary"
+        style="width: 100%; max-width: 220px; padding: 12px; font-weight: 600;">Unlock</button>
     </div>
   </div>
 

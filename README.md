@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="icons/feeflow-logo.png" alt="FeeFlow Logo" width="200">
+  <img src="FeeNext_horizontal_dark-mode.png" alt="FeeNext Logo" width="240">
 </p>
 
-<h1 align="center">FeeFlow — College Fee Management System</h1>
+<h1 align="center">FeeNext — College Fee Management System</h1>
 
 <p align="center">
   <strong>A comprehensive, offline-first Progressive Web App for managing student fees, scholarships, and notifications — synced to Google Sheets.</strong>
@@ -134,7 +134,6 @@ college-fee-management-pwa/
 ├── icons/
 │   ├── icon-192.png            # PWA icon (192x192)
 │   ├── icon-512.png            # PWA icon (512x512)
-│   ├── feeflow-logo.png        # Brand logo
 │   └── ai-logo.png             # AI assistant icon
 └── google_apps_script/
     └── Central_API.gs          # Google Apps Script backend
@@ -170,7 +169,7 @@ Host the files on any static server (GitHub Pages, Netlify, Vercel, etc.):
 
 ## 📱 Install as PWA
 
-FeeFlow can be installed as a native-like application:
+FeeNext can be installed as a native-like application:
 
 1. Open the app in **Chrome** or **Edge**
 2. Click the **"Install App"** button in the navbar (or browser's install prompt)

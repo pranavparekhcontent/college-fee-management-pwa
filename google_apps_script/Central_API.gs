@@ -510,7 +510,7 @@ function sendNotification(ss, data) {
       return { success: false, error: 'No admin email configured.' };
     }
     
-    var subject = data.subject || 'FeeFlow Alert';
+    var subject = data.subject || 'FeeNext Alert';
     var message = data.message || 'Notification message.';
     
     var attachments = [];

@@ -1,6 +1,6 @@
 {
-  "name": "FeeFlow — College Fee Management",
-  "short_name": "FeeFlow",
+  "name": "FeeNext — College Fee Management",
+  "short_name": "FeeNext",
   "description": "Comprehensive student fee management, scholarship tracking, and automated notifications",
   "start_url": "./app.html",
   "display": "standalone",

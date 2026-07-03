@@ -128,7 +128,7 @@ const App = (() => {
           switchView(state.activeView);
           Toast.show('Live Sync: Database updated.', 'info');
         }
-      } catch (_) {}
+      } catch (_) { }
     }, 10000);
   };
 
@@ -175,7 +175,7 @@ const App = (() => {
       const correct = getAppPin();
       // Reuse the confirm modal area as a quick PIN prompt
       const title = document.getElementById('confirm-title');
-      const body  = document.getElementById('confirm-body');
+      const body = document.getElementById('confirm-body');
       const backdrop = document.getElementById('confirm-backdrop');
       const okBtn = document.getElementById('confirm-ok');
       const cancelBtn = document.getElementById('confirm-cancel');
@@ -245,9 +245,9 @@ const App = (() => {
     });
   }
 
-  function lockApp() { 
+  function lockApp() {
     __stopLiveSync();
-    showLockScreen(); 
+    showLockScreen();
   }
 
   // Silent automated backup triggers for Launch and Close/Unload
@@ -261,7 +261,7 @@ const App = (() => {
       const pad = (n) => String(n).padStart(2, '0');
       const dateStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
       const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-      const subject = `FeeFlow Auto Backup [${triggerType}] - ${dateStr} ${timeStr}`;
+      const subject = `FeeNext Auto Backup [${triggerType}] - ${dateStr} ${timeStr}`;
 
       const payload = {
         recipientGroup: 'admin',
@@ -279,7 +279,7 @@ const App = (() => {
         payload.action = action;
 
         const url = baseUrl + '?action=' + encodeURIComponent(action);
-        
+
         // Standard keepalive fetch prevents CORS preflight OPTIONS request issues
         fetch(url, {
           method: 'POST',
@@ -287,7 +287,7 @@ const App = (() => {
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           redirect: 'follow',
           keepalive: true
-        }).catch(() => {});
+        }).catch(() => { });
       } else {
         // Normal launch notification API call
         await API.sendNotification(payload);

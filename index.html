@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FeeFlow — Student College Fee Management System PWA</title>
+  <title>FeeNext — Student College Fee Management System PWA</title>
 
   <meta name="description"
-    content="FeeFlow is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support.">
+    content="FeeNext is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support.">
   <meta name="keywords"
-    content="fee manager app, college fee management, scholarship tracker, student fees, PWA fee system, Google Sheets sync, offline fee app, FeeFlow">
+    content="fee manager app, college fee management, scholarship tracker, student fees, PWA fee system, Google Sheets sync, offline fee app, FeeNext">
   <meta name="author" content="VibeMantra Studio">
   <meta name="theme-color" content="#0b0f19">
 
@@ -19,27 +19,31 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/" />
-  <meta property="og:title" content="FeeFlow — Student College Fee Management System PWA" />
-  <meta property="og:description" content="FeeFlow is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support." />
-  <meta property="og:image" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
-  <meta property="og:site_name" content="FeeFlow" />
+  <meta property="og:title" content="FeeNext — Student College Fee Management System PWA" />
+  <meta property="og:description"
+    content="FeeNext is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support." />
+  <meta property="og:image"
+    content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
+  <meta property="og:site_name" content="FeeNext" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/" />
-  <meta property="twitter:title" content="FeeFlow — Student College Fee Management System PWA" />
-  <meta property="twitter:description" content="FeeFlow is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support." />
-  <meta property="twitter:image" content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
+  <meta property="twitter:title" content="FeeNext — Student College Fee Management System PWA" />
+  <meta property="twitter:description"
+    content="FeeNext is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support." />
+  <meta property="twitter:image"
+    content="https://pranavparekhcontent.github.io/college-fee-management-pwa/icons/icon-512.png" />
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "FeeFlow",
-    "alternateName": "FeeFlow — Student College Fee Management System PWA",
+    "name": "FeeNext",
+    "alternateName": "FeeNext — Student College Fee Management System PWA",
     "url": "https://pranavparekhcontent.github.io/college-fee-management-pwa/",
-    "description": "FeeFlow is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support.",
+    "description": "FeeNext is a comprehensive student fee management, scholarship tracking, and automated reminders PWA synced to Google Sheets with full offline support.",
     "applicationCategory": "EducationalApplication, BusinessApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires HTML5 compatible browser, offline capabilities require Service Worker support.",
@@ -126,7 +130,11 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    h1, h2, h3, h4, h5 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
       line-height: 1.2;
@@ -159,16 +167,21 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.12) 50%, transparent 100%),
-        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.08) 50%, transparent 100%),
-        radial-gradient(1.2px 1.2px at 60% 20%, rgba(255,255,255,0.06) 50%, transparent 100%),
-        radial-gradient(1px 1px at 80% 50%, rgba(255,255,255,0.1) 50%, transparent 100%);
+        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255, 255, 255, 0.12) 50%, transparent 100%),
+        radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.08) 50%, transparent 100%),
+        radial-gradient(1.2px 1.2px at 60% 20%, rgba(255, 255, 255, 0.06) 50%, transparent 100%),
+        radial-gradient(1px 1px at 80% 50%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
       animation: starDrift 80s linear infinite;
     }
 
     @keyframes starDrift {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-40px); }
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(-40px);
+      }
     }
 
     .orb {
@@ -181,38 +194,60 @@
     }
 
     .orb-1 {
-      width: 600px; height: 600px;
+      width: 600px;
+      height: 600px;
       background: #38bdf8;
-      top: -200px; left: -100px;
+      top: -200px;
+      left: -100px;
     }
 
     .orb-2 {
-      width: 500px; height: 500px;
+      width: 500px;
+      height: 500px;
       background: #818cf8;
-      bottom: -150px; right: -80px;
+      bottom: -150px;
+      right: -80px;
       animation-delay: -8s;
     }
 
     .orb-3 {
-      width: 400px; height: 400px;
+      width: 400px;
+      height: 400px;
       background: #f472b6;
-      top: 50%; left: 40%;
+      top: 50%;
+      left: 40%;
       animation-delay: -15s;
     }
 
     .orb-4 {
-      width: 350px; height: 350px;
+      width: 350px;
+      height: 350px;
       background: #34d399;
-      top: 20%; right: 10%;
+      top: 20%;
+      right: 10%;
       animation-delay: -22s;
     }
 
     @keyframes orbFloat {
-      0%   { transform: translate(0, 0) scale(1); }
-      25%  { transform: translate(80px, 120px) scale(1.15); }
-      50%  { transform: translate(-60px, 60px) scale(0.9); }
-      75%  { transform: translate(40px, -80px) scale(1.05); }
-      100% { transform: translate(0, 0) scale(1); }
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(80px, 120px) scale(1.15);
+      }
+
+      50% {
+        transform: translate(-60px, 60px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(40px, -80px) scale(1.05);
+      }
+
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
     }
 
     /* ═══════════════════════════════════════════════
@@ -242,11 +277,25 @@
       transform: translateY(0);
     }
 
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: 0.4s;
+    }
+
+    .reveal-delay-5 {
+      transition-delay: 0.5s;
+    }
 
     /* ═══════════════════════════════════════════════
        NAVIGATION
@@ -283,7 +332,8 @@
     }
 
     .logo-icon-wrap {
-      width: 38px; height: 38px;
+      width: 38px;
+      height: 38px;
       background: linear-gradient(135deg, var(--accent), var(--accent-alt));
       border-radius: 10px;
       display: flex;
@@ -370,12 +420,12 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #6366f1);
       color: #fff;
-      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .btn-ghost {
@@ -423,8 +473,15 @@
     }
 
     @keyframes badgePulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.15); }
-      50% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.15);
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(56, 189, 248, 0);
+      }
     }
 
     .hero h1 {
@@ -444,8 +501,15 @@
     }
 
     @keyframes gradientShift {
-      0%, 100% { background-position: 0% center; }
-      50% { background-position: 100% center; }
+
+      0%,
+      100% {
+        background-position: 0% center;
+      }
+
+      50% {
+        background-position: 100% center;
+      }
     }
 
     .hero-subtitle {
@@ -467,7 +531,7 @@
       position: absolute;
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -605,12 +669,35 @@
       position: relative;
     }
 
-    .feat-icon-box.accent   { background: rgba(56,189,248,0.12); color: var(--accent); }
-    .feat-icon-box.success  { background: rgba(52,211,153,0.12); color: var(--success); }
-    .feat-icon-box.warning  { background: rgba(251,191,36,0.12); color: var(--warning); }
-    .feat-icon-box.purple   { background: rgba(167,139,250,0.12); color: var(--purple); }
-    .feat-icon-box.pink     { background: rgba(244,114,182,0.12); color: var(--pink); }
-    .feat-icon-box.danger   { background: rgba(248,113,113,0.12); color: var(--danger); }
+    .feat-icon-box.accent {
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+    }
+
+    .feat-icon-box.success {
+      background: rgba(52, 211, 153, 0.12);
+      color: var(--success);
+    }
+
+    .feat-icon-box.warning {
+      background: rgba(251, 191, 36, 0.12);
+      color: var(--warning);
+    }
+
+    .feat-icon-box.purple {
+      background: rgba(167, 139, 250, 0.12);
+      color: var(--purple);
+    }
+
+    .feat-icon-box.pink {
+      background: rgba(244, 114, 182, 0.12);
+      color: var(--pink);
+    }
+
+    .feat-icon-box.danger {
+      background: rgba(248, 113, 113, 0.12);
+      color: var(--danger);
+    }
 
     .feature-card h3 {
       font-size: 18px;
@@ -636,7 +723,7 @@
       border-radius: 6px;
       background: var(--accent-glow);
       color: var(--accent);
-      border: 1px solid rgba(56,189,248,0.1);
+      border: 1px solid rgba(56, 189, 248, 0.1);
     }
 
     /* ═══════════════════════════════════════════════
@@ -730,7 +817,7 @@
       border-color: var(--border-hover);
       color: var(--text);
       transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
 
     .tech-badge i {
@@ -747,7 +834,7 @@
     }
 
     .cta-card {
-      background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(99,102,241,0.08));
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(99, 102, 241, 0.08));
       border: 1px solid rgba(56, 189, 248, 0.12);
       border-radius: 24px;
       padding: 64px 40px;
@@ -759,7 +846,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(56,189,248,0.05) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.05) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -929,8 +1016,9 @@
   <nav class="navbar" id="navbar">
     <div class="container nav-inner">
       <a href="#" class="logo-brand">
-        <img src="icons/feeflow-logo.png" alt="FeeFlow Logo" style="height: 38px; width: auto; object-fit: contain; filter: invert(0.9) hue-rotate(180deg) brightness(1.5) contrast(1.2) drop-shadow(0 0 8px rgba(56, 189, 248, 0.25)); margin-right: 2px;">
-        <div class="logo-text">FEE<span>FLOW</span></div>
+        <img src="FeeNext_horizontal_dark-mode.png" alt="FeeNext Logo"
+          style="height: 38px; width: auto; object-fit: contain; margin-right: 2px;">
+        <div class="logo-text">FEE<span>NEXT</span></div>
       </a>
 
       <ul class="nav-links">
@@ -971,11 +1059,12 @@
           The Complete <br><span class="gradient-text">Fee Management System</span><br>for Colleges
         </h1>
         <p class="hero-subtitle reveal reveal-delay-2">
-          Manage admissions, track student fees & scholarships, verify bank records, send automated notifications — all synced to Google Sheets with full offline support.
+          Manage admissions, track student fees & scholarships, verify bank records, send automated notifications — all
+          synced to Google Sheets with full offline support.
         </p>
         <div class="hero-ctas reveal reveal-delay-3">
           <a href="app.html" class="btn btn-primary btn-lg">
-            <i class="ph-bold ph-rocket-launch"></i> Open FeeFlow
+            <i class="ph-bold ph-rocket-launch"></i> Open FeeNext
           </a>
           <button id="btn-pwa-install-hero" class="btn btn-ghost btn-lg" style="display: none;">
             <i class="ph-bold ph-device-mobile"></i> Install as App
@@ -1023,7 +1112,8 @@
         <div class="section-header reveal">
           <div class="section-eyebrow"><i class="ph-bold ph-sparkle"></i> Everything You Need</div>
           <h2 class="section-title">Powerful Features, Zero Compromise</h2>
-          <p class="section-desc">Every tool a college administrator needs to manage fee collection, scholarships, and student data — in one beautiful interface.</p>
+          <p class="section-desc">Every tool a college administrator needs to manage fee collection, scholarships, and
+            student data — in one beautiful interface.</p>
         </div>
 
         <div class="features-grid">
@@ -1032,7 +1122,8 @@
           <div class="feature-card reveal">
             <div class="feat-icon-box accent"><i class="ph-bold ph-chart-pie-slice"></i></div>
             <h3>Visual Dashboard</h3>
-            <p>At-a-glance metrics with ECharts visualizations — gauge charts, bar charts, donut breakdowns, rose charts, and gender distribution analysis.</p>
+            <p>At-a-glance metrics with ECharts visualizations — gauge charts, bar charts, donut breakdowns, rose
+              charts, and gender distribution analysis.</p>
             <span class="feature-tag">5 Chart Types</span>
           </div>
 
@@ -1040,7 +1131,8 @@
           <div class="feature-card reveal reveal-delay-1">
             <div class="feat-icon-box accent"><i class="ph-bold ph-users-three"></i></div>
             <h3>Student Database</h3>
-            <p>Search, filter, and manage the entire student registry. View payment history, cancel or restore admissions, and track every record instantly.</p>
+            <p>Search, filter, and manage the entire student registry. View payment history, cancel or restore
+              admissions, and track every record instantly.</p>
             <span class="feature-tag">Real-Time Search</span>
           </div>
 
@@ -1048,7 +1140,8 @@
           <div class="feature-card reveal reveal-delay-2">
             <div class="feat-icon-box success"><i class="ph-bold ph-user-plus"></i></div>
             <h3>New Admission & Bulk Import</h3>
-            <p>Add students one-by-one or bulk import from Excel files. Auto-generates serial numbers, calculates pending fees, and supports flexible column mapping.</p>
+            <p>Add students one-by-one or bulk import from Excel files. Auto-generates serial numbers, calculates
+              pending fees, and supports flexible column mapping.</p>
             <span class="feature-tag">Excel Import</span>
           </div>
 
@@ -1056,7 +1149,8 @@
           <div class="feature-card reveal">
             <div class="feat-icon-box warning"><i class="ph-bold ph-bank"></i></div>
             <h3>Auto Bank Verification</h3>
-            <p>Upload bank statement PDFs and automatically match transactions with student payments by UTR/Transaction ID and amount for instant verification.</p>
+            <p>Upload bank statement PDFs and automatically match transactions with student payments by UTR/Transaction
+              ID and amount for instant verification.</p>
             <span class="feature-tag">PDF Parsing</span>
           </div>
 
@@ -1064,7 +1158,8 @@
           <div class="feature-card reveal reveal-delay-1">
             <div class="feat-icon-box purple"><i class="ph-bold ph-newspaper-clipping"></i></div>
             <h3>Reports & Analytics</h3>
-            <p>Class-wise fee summaries with gender breakdowns, collection percentages, scholarship tracking, and one-click Excel export with separate sheets per class.</p>
+            <p>Class-wise fee summaries with gender breakdowns, collection percentages, scholarship tracking, and
+              one-click Excel export with separate sheets per class.</p>
             <span class="feature-tag">Export to Excel</span>
           </div>
 
@@ -1072,7 +1167,8 @@
           <div class="feature-card reveal reveal-delay-2">
             <div class="feat-icon-box success"><i class="ph-bold ph-download-simple"></i></div>
             <h3>Custom Excel Export</h3>
-            <p>Choose exactly which columns and classes to export. Generate tailored Excel reports with selected fields — from contact info to scholarship data.</p>
+            <p>Choose exactly which columns and classes to export. Generate tailored Excel reports with selected fields
+              — from contact info to scholarship data.</p>
             <span class="feature-tag">Custom Columns</span>
           </div>
 
@@ -1080,7 +1176,8 @@
           <div class="feature-card reveal">
             <div class="feat-icon-box pink"><i class="ph-bold ph-brain"></i></div>
             <h3>AI Brain Assistant</h3>
-            <p>Ask natural language questions about your fee data. Powered by OpenRouter or Groq APIs with Llama models — the AI knows all your student records.</p>
+            <p>Ask natural language questions about your fee data. Powered by OpenRouter or Groq APIs with Llama models
+              — the AI knows all your student records.</p>
             <span class="feature-tag">AI Powered</span>
           </div>
 
@@ -1088,7 +1185,8 @@
           <div class="feature-card reveal reveal-delay-1">
             <div class="feat-icon-box warning"><i class="ph-bold ph-paper-plane-tilt"></i></div>
             <h3>Smart Notifications</h3>
-            <p>Send fee reminders and custom announcements to students & parents via email. Monthly automated reminders on the 1st of each month.</p>
+            <p>Send fee reminders and custom announcements to students & parents via email. Monthly automated reminders
+              on the 1st of each month.</p>
             <span class="feature-tag">Email Alerts</span>
           </div>
 
@@ -1096,7 +1194,8 @@
           <div class="feature-card reveal reveal-delay-2">
             <div class="feat-icon-box danger"><i class="ph-bold ph-shield-check"></i></div>
             <h3>Backup & Restore</h3>
-            <p>Auto email backups on startup and shutdown. Download complete data as Excel, or restore from a previous backup file with one-click recovery.</p>
+            <p>Auto email backups on startup and shutdown. Download complete data as Excel, or restore from a previous
+              backup file with one-click recovery.</p>
             <span class="feature-tag">Auto-Backup</span>
           </div>
 
@@ -1104,7 +1203,8 @@
           <div class="feature-card reveal">
             <div class="feat-icon-box purple"><i class="ph-bold ph-lock-key"></i></div>
             <h3>Secure License System</h3>
-            <p>HWID-bound activation with base-64 encoded license keys and HMAC-SHA256 signature verification. Protects student financial data with expiry controls.</p>
+            <p>HWID-bound activation with base-64 encoded license keys and HMAC-SHA256 signature verification. Protects
+              student financial data with expiry controls.</p>
             <span class="feature-tag">HWID Locked</span>
           </div>
 
@@ -1112,7 +1212,8 @@
           <div class="feature-card reveal reveal-delay-1">
             <div class="feat-icon-box accent"><i class="ph-bold ph-cloud-arrow-up"></i></div>
             <h3>Offline-First with Sheet Sync</h3>
-            <p>Full offline data entry with queuing. All changes sync back to your centralized Google Sheet automatically when connectivity is restored.</p>
+            <p>Full offline data entry with queuing. All changes sync back to your centralized Google Sheet
+              automatically when connectivity is restored.</p>
             <span class="feature-tag">Google Sheets</span>
           </div>
 
@@ -1120,7 +1221,8 @@
           <div class="feature-card reveal reveal-delay-2">
             <div class="feat-icon-box pink"><i class="ph-bold ph-moon-stars"></i></div>
             <h3>Dark & Light Themes</h3>
-            <p>Beautiful dual-theme design with smooth transitions. A premium dark mode for low-light environments and a clean light mode for daytime use.</p>
+            <p>Beautiful dual-theme design with smooth transitions. A premium dark mode for low-light environments and a
+              clean light mode for daytime use.</p>
             <span class="feature-tag">Dual Theme</span>
           </div>
 
@@ -1134,7 +1236,8 @@
         <div class="section-header reveal">
           <div class="section-eyebrow"><i class="ph-bold ph-path"></i> Simple Setup</div>
           <h2 class="section-title">Up & Running in 3 Steps</h2>
-          <p class="section-desc">No complicated server setup. Just connect your Google Sheet, import your data, and start managing fees.</p>
+          <p class="section-desc">No complicated server setup. Just connect your Google Sheet, import your data, and
+            start managing fees.</p>
         </div>
 
         <div class="steps-row">
@@ -1146,12 +1249,14 @@
           <div class="step-card reveal reveal-delay-2">
             <div class="step-num">2</div>
             <h3>Import Student Data</h3>
-            <p>Upload your existing Excel with student records. Flexible column mapping handles any format automatically.</p>
+            <p>Upload your existing Excel with student records. Flexible column mapping handles any format
+              automatically.</p>
           </div>
           <div class="step-card reveal reveal-delay-4">
             <div class="step-num">3</div>
             <h3>Manage Everything</h3>
-            <p>Track fees, verify payments, send reminders, generate reports — all from one powerful offline-ready dashboard.</p>
+            <p>Track fees, verify payments, send reminders, generate reports — all from one powerful offline-ready
+              dashboard.</p>
           </div>
         </div>
       </div>
@@ -1163,7 +1268,8 @@
         <div class="section-header reveal">
           <div class="section-eyebrow"><i class="ph-bold ph-code"></i> Built With</div>
           <h2 class="section-title">Modern Tech Stack</h2>
-          <p class="section-desc">Carefully chosen technologies for maximum performance, reliability, and zero-dependency deployments.</p>
+          <p class="section-desc">Carefully chosen technologies for maximum performance, reliability, and
+            zero-dependency deployments.</p>
         </div>
 
         <div class="tech-badges reveal">
@@ -1188,9 +1294,10 @@
       <div class="container">
         <div class="cta-card reveal">
           <h2>Ready to Simplify Fee Management?</h2>
-          <p>Start managing your college's entire fee collection process with a single, powerful PWA. No installations, no servers, just open and go.</p>
+          <p>Start managing your college's entire fee collection process with a single, powerful PWA. No installations,
+            no servers, just open and go.</p>
           <a href="app.html" class="btn btn-primary btn-lg">
-            <i class="ph-bold ph-rocket-launch"></i> Launch FeeFlow Now
+            <i class="ph-bold ph-rocket-launch"></i> Launch FeeNext Now
           </a>
         </div>
       </div>
@@ -1205,7 +1312,7 @@
         <div class="logo-icon-wrap" style="width: 28px; height: 28px; font-size: 14px; border-radius: 7px;">
           <i class="ph-bold ph-wallet"></i>
         </div>
-        <span class="footer-copy">&copy; 2026 FeeFlow — Powered by VibeMantra Studio</span>
+        <span class="footer-copy">&copy; 2026 FeeNext — Powered by VibeMantra Studio</span>
       </div>
       <div class="footer-right">
         <div class="pwa-badge">
@@ -1245,11 +1352,11 @@
           const target = parseInt(el.dataset.count);
           const suffix = el.dataset.suffix || '';
           if (target === 0) return;
-          
+
           let current = 0;
           const duration = 2000;
           const step = target / (duration / 16);
-          
+
           const timer = setInterval(() => {
             current += step;
             if (current >= target) {
@@ -1258,7 +1365,7 @@
             }
             el.textContent = Math.floor(current) + suffix;
           }, 16);
-          
+
           counterObserver.unobserve(el);
         }
       });
@@ -1315,7 +1422,7 @@
 
     // ── Smooth scroll for anchor links ──
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
@@ -1327,7 +1434,7 @@
     });
 
     // ── Contact Modal Toggle ──
-    window.toggleContactModal = function() {
+    window.toggleContactModal = function () {
       const modal = document.getElementById('contact-modal');
       const content = modal.querySelector('.contact-modal-content');
       if (modal.style.display === 'none' || !modal.style.display) {
@@ -1347,35 +1454,51 @@
   </script>
 
   <!-- Contact Modal -->
-  <div id="contact-modal" class="contact-modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(6, 8, 15, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 2000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-    <div class="contact-modal-content" style="background: var(--surface-solid); border: 1px solid var(--border-hover); padding: 32px; border-radius: var(--radius); width: 90%; max-width: 440px; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.6); position: relative; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
-      <button onclick="toggleContactModal()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: color 0.2s;"><i class="ph-bold ph-x"></i></button>
-      <div style="width: 54px; height: 54px; margin: 0 auto 20px; font-size: 26px; background: rgba(56,189,248,0.12); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+  <div id="contact-modal" class="contact-modal-overlay"
+    style="display: none; position: fixed; inset: 0; background: rgba(6, 8, 15, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 2000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="contact-modal-content"
+      style="background: var(--surface-solid); border: 1px solid var(--border-hover); padding: 32px; border-radius: var(--radius); width: 90%; max-width: 440px; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.6); position: relative; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+      <button onclick="toggleContactModal()"
+        style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: color 0.2s;"><i
+          class="ph-bold ph-x"></i></button>
+      <div
+        style="width: 54px; height: 54px; margin: 0 auto 20px; font-size: 26px; background: rgba(56,189,248,0.12); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
         <i class="ph-bold ph-phone-call"></i>
       </div>
       <h3 style="font-size: 22px; margin-bottom: 8px; font-family: 'Outfit', sans-serif;">Get in Touch</h3>
-      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Have questions or need assistance? Contact developer directly.</p>
-      
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Have questions or need assistance?
+        Contact developer directly.</p>
+
       <div style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
-        <a href="tel:+919595206060" style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all 0.2s; text-decoration: none;">
+        <a href="tel:+919595206060"
+          style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all 0.2s; text-decoration: none;">
           <i class="ph-bold ph-phone" style="font-size: 20px; color: var(--accent);"></i>
           <div>
-            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; line-height: 1;">Call or Text</div>
+            <div
+              style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; line-height: 1;">
+              Call or Text</div>
             <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-top: 2px;">+91 9595206060</div>
           </div>
         </a>
-        <a href="https://wa.me/919595206060" target="_blank" style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all 0.2s; text-decoration: none;">
+        <a href="https://wa.me/919595206060" target="_blank"
+          style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all 0.2s; text-decoration: none;">
           <i class="ph-bold ph-whatsapp-logo" style="font-size: 20px; color: var(--success);"></i>
           <div>
-            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; line-height: 1;">WhatsApp Chat</div>
+            <div
+              style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; line-height: 1;">
+              WhatsApp Chat</div>
             <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-top: 2px;">+91 9595206060</div>
           </div>
         </a>
-        <a href="mailto:pranavparekhcontent@gmail.com" style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all 0.2s; text-decoration: none;">
+        <a href="mailto:pranavparekhcontent@gmail.com"
+          style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all 0.2s; text-decoration: none;">
           <i class="ph-bold ph-envelope" style="font-size: 20px; color: var(--accent-alt);"></i>
           <div>
-            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; line-height: 1;">Email Us</div>
-            <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-top: 2px; word-break: break-all;">pranavparekhcontent@gmail.com</div>
+            <div
+              style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; line-height: 1;">
+              Email Us</div>
+            <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-top: 2px; word-break: break-all;">
+              pranavparekhcontent@gmail.com</div>
           </div>
         </a>
       </div>

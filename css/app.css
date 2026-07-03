@@ -661,11 +661,25 @@ body {
   color: var(--pink);
 }
 
-.text-success { color: var(--success) !important; }
-.text-warning { color: var(--warning) !important; }
-.text-danger { color: var(--danger) !important; }
-.text-purple { color: var(--purple) !important; }
-.text-pink { color: var(--pink) !important; }
+.text-success {
+  color: var(--success) !important;
+}
+
+.text-warning {
+  color: var(--warning) !important;
+}
+
+.text-danger {
+  color: var(--danger) !important;
+}
+
+.text-purple {
+  color: var(--purple) !important;
+}
+
+.text-pink {
+  color: var(--pink) !important;
+}
 
 .metric-icon {
   position: absolute;
@@ -1466,8 +1480,13 @@ body {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 [data-theme="light"] .btn-sync {
@@ -3635,50 +3654,61 @@ textarea.form-input,
   padding: 8px 6px !important;
 }
 
-/* ── FeeFlow Brand Logo Styling ── */
-.feeflow-brand-logo {
+/* ── FeeNext Brand Logo Styling ── */
+.feenext-brand-logo {
   width: auto !important;
   max-width: 90% !important;
   object-fit: contain !important;
-  filter: invert(0.9) hue-rotate(180deg) brightness(1.2); /* Inverts dark text to light while keeping gradients */
+  filter: invert(0.9) hue-rotate(180deg) brightness(1.2);
+  /* Inverts dark text to light while keeping gradients */
   transition: filter 0.3s ease, height 0.3s ease;
 }
 
 /* Desktop first styles (Default) */
-.feeflow-brand-logo {
-  height: 120px !important; /* Large logo for desktop */
+.feenext-brand-logo {
+  height: 120px !important;
+  /* Large logo for desktop */
 }
-.feeflow-brand-logo.lock-logo {
-  height: 180px !important; /* Reverted to bigger size */
+
+.feenext-brand-logo.lock-logo {
+  height: 180px !important;
+  /* Reverted to bigger size */
   max-width: 80% !important;
 }
 
 /* Mobile later styles (Screen width <= 768px or device-mobile active) */
 @media (max-width: 768px) {
-  .feeflow-brand-logo {
-    height: 60px !important; /* Scaled down for mobile view sidebar */
+  .feenext-brand-logo {
+    height: 60px !important;
+    /* Scaled down for mobile view sidebar */
   }
-  .feeflow-brand-logo.lock-logo {
-    height: 120px !important; /* Larger on mobile as well */
+
+  .feenext-brand-logo.lock-logo {
+    height: 120px !important;
+    /* Larger on mobile as well */
   }
 }
 
 /* Explicit device classes set on launch */
-.device-desktop .feeflow-brand-logo {
-  height: 120px !important;
-}
-.device-desktop .feeflow-brand-logo.lock-logo {
-  height: 180px !important;
-}
-.device-mobile .feeflow-brand-logo {
-  height: 60px !important;
-}
-.device-mobile .feeflow-brand-logo.lock-logo {
+.device-desktop .feenext-brand-logo {
   height: 120px !important;
 }
 
-[data-theme="light"] .feeflow-brand-logo {
-  filter: none !important; /* Keep original transparent logo on light background */
+.device-desktop .feenext-brand-logo.lock-logo {
+  height: 180px !important;
+}
+
+.device-mobile .feenext-brand-logo {
+  height: 60px !important;
+}
+
+.device-mobile .feenext-brand-logo.lock-logo {
+  height: 120px !important;
+}
+
+[data-theme="light"] .feenext-brand-logo:not(.lock-logo) {
+  filter: none !important;
+  /* Keep original transparent logo on light background */
 }
 
 /* ── AI Experimental Warning (Pulsing Alert Bar style) ── */
@@ -3688,7 +3718,8 @@ textarea.form-input,
   animation: pulse-border 1.2s ease-in-out infinite;
 }
 
-.warning-v5::before { /* animated left bar */
+.warning-v5::before {
+  /* animated left bar */
   content: '';
   position: absolute;
   left: 0;
@@ -3706,31 +3737,57 @@ textarea.form-input,
 }
 
 @keyframes pulse-border {
-  0%, 100% {
-    border-color: rgba(255,20,20,0.25);
+
+  0%,
+  100% {
+    border-color: rgba(255, 20, 20, 0.25);
     box-shadow: none;
   }
+
   50% {
-    border-color: rgba(255,20,20,0.7);
-    box-shadow: 0 0 12px rgba(255,20,20,0.2);
+    border-color: rgba(255, 20, 20, 0.7);
+    box-shadow: 0 0 12px rgba(255, 20, 20, 0.2);
   }
 }
 
 @keyframes bar-slide {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 200%; }
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 200%;
+  }
 }
 
 @keyframes icon-shake {
-  0%, 90%, 100% { transform: rotate(0); }
-  92% { transform: rotate(-12deg); }
-  94% { transform: rotate(12deg); }
-  96% { transform: rotate(-8deg); }
-  98% { transform: rotate(8deg); }
+
+  0%,
+  90%,
+  100% {
+    transform: rotate(0);
+  }
+
+  92% {
+    transform: rotate(-12deg);
+  }
+
+  94% {
+    transform: rotate(12deg);
+  }
+
+  96% {
+    transform: rotate(-8deg);
+  }
+
+  98% {
+    transform: rotate(8deg);
+  }
 }
 
 @media (max-width: 900px) {
   .warning-v5 {
-    display: none !important; /* Hide on smaller screen layouts */
+    display: none !important;
+    /* Hide on smaller screen layouts */
   }
 }
